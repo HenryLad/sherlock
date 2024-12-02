@@ -27,6 +27,21 @@ else
     echo -e "[$Error]: Dotnet is not installed"
     exit 1
 fi
+# Define an array with the most popular social media links
+social_media_links=(
+    "https://www.facebook.com/$Username"
+    "https://www.twitter.com/$Username"
+    "https://www.instagram.com/$Username"
+    "https://www.linkedin.com/in/$Username"
+    "https://www.snapchat.com/add/$Username"
+    "https://www.pinterest.com/$Username"
+    "https://www.reddit.com/user/$Username"
+    "https://www.tiktok.com/@$Username"
+    "https://www.youtube.com/$Username"
+    "https://www.whatsapp.com/$Username"
+)
+
+
 
 dotnet add package HtmlAgilityPack | grep -q 'Restored'
 if [ $? -eq 0 ]; then
@@ -45,5 +60,14 @@ if [ $? -eq 0 ]; then
 else
     # shellcheck disable=SC2059
     printf "[$Error]: Build has failed\n"
+    exit 1
+fi
+
+# Pass each element of the array as a separate argument
+dotnet run "$Username" "${social_media_links[@]}"
+if [ $? -eq 0 ]; then
+    printf "[$Success]: Run is successful\n"
+else
+    printf "[$Error]: Run has failed\n"
     exit 1
 fi
