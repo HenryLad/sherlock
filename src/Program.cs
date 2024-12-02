@@ -18,12 +18,12 @@ for (int i = 1; i < args.Length; i++)
     HtmlWeb web = new HtmlWeb();
     HtmlDocument doc = web.Load(url);
 
-    var nodes = doc.DocumentNode.SelectNodes("//a[@href]");
+    var nodes = doc.DocumentNode.SelectNodes("//p");
     if (nodes != null)
     {
         foreach (HtmlNode link in nodes)
         {
-            HtmlAttribute attr = link.Attributes["href"];
+            HtmlAttribute attr = link.Attributes["p"];
             Console.WriteLine(attr.Value);
         }
     }
