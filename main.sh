@@ -16,21 +16,34 @@ fi
 
 Username=$1
 
-echo -e "[$Success]: Username is provided as \033[1m$Username\033[0m"
+printf "[$Success]: Username is provided as \033[1m%s\033[0m\n" "$Username"
 
-# List of social media platforms to check
-platforms=(
-    "https://instagram.com/$Username/"
-    "https://x.com/$Username"
-    "https://www.facebook.com/$Username"
-)
 
-for URL in "${platforms[@]}"; do
-    Response=$(curl -sL $URL)
+cd ./src || exit 1 
+dotnet --version | grep -q '[7-9]'
+if [ $? -eq 0 ]; then
+    echo -e "[$Success]: Dotnet is installed"
+else
+    echo -e "[$Error]: Dotnet is not installed"
+    exit 1
+fi
 
-    if echo "$Response" | grep -q "$Username"; then
-        printf "[$Success]: Successfully retrieved data from %s\n" "$URL"
-    else
-        printf "[$NOT_FOUND]: The page for %s isn't available.\n" "$URL"
-    fi
-done
+dotnet add package HtmlAgilityPack | grep -q 'Restored'
+if [ $? -eq 0 ]; then
+    echo -e "[$Success]: HtmlAgilityPack is installed"
+else
+    echo -e "[$Error]: HtmlAgilityPack is not installed"
+    exit 1
+fi
+
+
+dotnet build | grep -q 'succeeded' 
+# shellcheck disable=SC2181
+if [ $? -eq 0 ]; then
+    # shellcheck disable=SC2059
+    printf "[$Success]: Build is successful\n"
+else
+    # shellcheck disable=SC2059
+    printf "[$Error]: Build has failed\n"
+    exit 1
+fi
