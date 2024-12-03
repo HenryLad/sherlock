@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Define color codes
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 NC='\033[0m' 
@@ -17,15 +17,36 @@ Username=$1
 
 printf "[$Success]: Username is provided as \033[1m%s\033[0m\n" "$Username"
 
-# Define the Instagram profile URL
-profile_url="https://www.instagram.com/$Username/"
 
-# Send a GET request to the Instagram profile page
-response=$(curl -sL $profile_url)
+platforms=(
+    "Instagram:https://www.instagram.com/$Username/"
+    "Twitter:https://twitter.com/$Username"
+    "Facebook:https://www.facebook.com/$Username"
+    "LinkedIn:https://www.linkedin.com/in/$Username"
+    "Snapchat:https://www.snapchat.com/add/$Username"
+    "Pinterest:https://www.pinterest.com/$Username"
+    "Reddit:https://www.reddit.com/user/$Username"
+    "TikTok:https://www.tiktok.com/@$Username"
+    "YouTube:https://www.youtube.com/$Username"
+)
 
-# Check if the profile exists by looking for the <meta property="og:description"> tag
-if echo "$response" | grep -q '<meta property="og:description"'; then
-    printf "[$Success]: The username %s exists on Instagram.\n" "$Username"
-else
-    printf "[$Error]: The username %s does not exist on Instagram.\n" "$Username"
-fi
+
+check_profile() {
+    platform_name=$1
+    profile_url=$2
+
+    response=$(curl -sL $profile_url)
+
+    if echo "$response" | grep -q '<meta property="og:description"' || echo "$response" | grep -q '<title>'; then
+        printf "[$Success]: The username %s exists on %s.\n" "$Username" "$platform_name"
+    else
+        printf "[$Error]: The username %s does not exist on %s.\n" "$Username" "$platform_name"
+    fi
+}
+
+
+for platform in "${platforms[@]}"; do
+    platform_name=$(echo $platform | cut -d: -f1)
+    profile_url=$(echo $platform | cut -d: -f2)
+    check_profile "$platform_name" "$profile_url"
+done
