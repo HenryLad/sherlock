@@ -19,14 +19,6 @@ Username=$1
 printf "[$Success]: Username is provided as \033[1m%s\033[0m\n" "$Username"
 
 
-cd ./src || exit 1 
-dotnet --version | grep -q '[7-9]'
-if [ $? -eq 0 ]; then
-    echo -e "[$Success]: Dotnet is installed"
-else
-    echo -e "[$Error]: Dotnet is not installed"
-    exit 1
-fi
 # Define an array with the most popular social media links
 social_media_links=(
     "https://www.facebook.com/$Username"
@@ -43,31 +35,10 @@ social_media_links=(
 
 
 
-dotnet add package HtmlAgilityPack | grep -q 'Restored'
-if [ $? -eq 0 ]; then
-    echo -e "[$Success]: HtmlAgilityPack is installed"
-else
-    echo -e "[$Error]: HtmlAgilityPack is not installed"
-    exit 1
-fi
 
 
-dotnet build | grep -q 'succeeded' 
-# shellcheck disable=SC2181
+curl -x https://instagram.com/$Username > /dev/null
 if [ $? -eq 0 ]; then
-    # shellcheck disable=SC2059
-    printf "[$Success]: Build is successful\n"
-else
-    # shellcheck disable=SC2059
-    printf "[$Error]: Build has failed\n"
-    exit 1
-fi
-
-# Pass each element of the array as a separate argument
-dotnet run "$Username" "${social_media_links[@]}"
-if [ $? -eq 0 ]; then
-    printf "[$Success]: Run is successful\n"
-else
-    printf "[$Error]: Run has failed\n"
+    echo -e "[$Error]: No search results found for $Username"
     exit 1
 fi
