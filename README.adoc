@@ -4,10 +4,15 @@ This script checks the existence of a given username across multiple social medi
 
 == Usage
 
-To use this script, run the following command in your terminal:
-´´´
+To use this script already downloaded script, run the following command in your terminal:
+
+```
 ./main.sh <username>
-´´´
+```
+To dircetly run the script from the repository, run the following command in your terminal:
+```
+git clone https://github.com/HenryLad/sherlock.git && cd sherlock && ./main.sh <username>
+```
 
 
 Replace `<username>` with the username you want to check.
@@ -15,6 +20,7 @@ Replace `<username>` with the username you want to check.
 == Platforms Supported
 
 The script checks the following platforms:
+
 * Instagram
 * Twitter
 * Facebook
