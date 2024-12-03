@@ -1,0 +1,28 @@
+= Social Media Username Checker
+
+This script checks the existence of a given username across multiple social media platforms.
+
+== Usage
+
+To use this script, run the following command in your terminal:
+´´´
+./main.sh <username>
+´´´
+
+
+Replace `<username>` with the username you want to check.
+
+== Platforms Supported
+
+The script checks the following platforms:
+* Instagram
+* Twitter
+* Facebook
+* LinkedIn
+* Snapchat
+* Pinterest
+* Reddit
+* TikTok
+* YouTube
+
+== Example
